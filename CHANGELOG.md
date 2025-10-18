@@ -1,3 +1,12 @@
+# [1.13.0](https://github.com/tahirdibirovsoftware/structifier/compare/v1.12.0...v1.13.0) (2025-10-18)
+
+
+### Features
+
+* add toArray and find methods to LinkedList implementation ([ec9d310](https://github.com/tahirdibirovsoftware/structifier/commit/ec9d310c200c0d5e52ee51e7008076c660b260fe))
+* add toArray and find methods to LinkedList implementation ([628caa6](https://github.com/tahirdibirovsoftware/structifier/commit/628caa688d2c48ff0a0ae86e5b4ab12fea303814))
+* add toArray and find methods to LinkedList implementation ([3e18272](https://github.com/tahirdibirovsoftware/structifier/commit/3e18272108a81894a4c9086016ef1c50201916e6))
+
 # [1.12.0](https://github.com/tahirdibirovsoftware/structs/compare/v1.11.0...v1.12.0) (2025-10-18)
 
 
