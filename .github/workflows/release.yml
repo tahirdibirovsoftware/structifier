@@ -33,8 +33,15 @@ jobs:
       - name: Build package
         run: npm run build
 
+      - name: Debug NPM_TOKEN
+        run: echo "NPM_TOKEN is set to [${NPM_TOKEN}]"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        # Note: The actual token value will be masked for security
+
       - name: Release with semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # built-in, now has write perms
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}        # from npm automation token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          SEMANTIC_RELEASE_LOG_LEVEL: debug  # Enable debug logging
         run: npx semantic-release
