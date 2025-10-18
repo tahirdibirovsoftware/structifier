@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/tahirdibirovsoftware/structs/compare/v1.0.0...v1.0.1) (2025-10-18)
+
+
+### Bug Fixes
+
+* **release:** enable npm publish ([1f3f393](https://github.com/tahirdibirovsoftware/structs/commit/1f3f393abf2369ab0d4a7d3a99ed1345e7e7c494))
+
 # 1.0.0 (2025-10-18)
 
 
