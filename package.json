@@ -1,6 +1,6 @@
 {
-  "name": "structy",
-  "version": "1.7.0",
+  "name": "structifier",
+  "version": "1.1.0",
   "description": "Basic data structures for working in the JS environment",
   "keywords": [
     "structs"
