@@ -1,5 +1,5 @@
 import { NotFoundError } from '../exceptions';
-
+//
 class Node<T> {
   public data: T;
   public next: Node<T> | null;
