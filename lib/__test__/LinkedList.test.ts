@@ -2,8 +2,8 @@ import { NotFoundError } from '../exceptions';
 import { LinkedList } from '../index';
 
 describe('LinkedList', () => {
-  const createList = (values: unknown[] = []): LinkedList<unknown> => {
-    const list = new LinkedList();
+  const createList = <T>(values: T[] = []): LinkedList<T> => {
+    const list = new LinkedList<T>();
     values.forEach((v) => list.add(v));
     return list;
   };
@@ -34,7 +34,7 @@ describe('LinkedList', () => {
     });
   });
 
-  describe('Removal first element', () => {
+  describe('Removal First Element', () => {
     test('should remove first element from head and return their values', () => {
       const list = createList([44, 32, 22]);
       expect(list.removeFirst()).toBe(44);
@@ -42,14 +42,24 @@ describe('LinkedList', () => {
       expect(list.removeFirst()).toBe(22);
       expect(() => list.removeFirst()).toThrow(NotFoundError);
     });
+
+    test('should throw NotFoundError on empty list', () => {
+      const list = createList();
+      expect(() => list.removeFirst()).toThrow(NotFoundError);
+    });
   });
 
-  describe('Removal last element', () => {
+  describe('Removal Last Element', () => {
     test('should remove last element from tail and return their value', () => {
       const list = createList([33, 45, 67]);
       expect(list.removeLast()).toBe(67);
       expect(list.removeLast()).toBe(45);
       expect(list.removeLast()).toBe(33);
+      expect(() => list.removeLast()).toThrow(NotFoundError);
+    });
+
+    test('should throw NotFoundError on empty list', () => {
+      const list = createList();
       expect(() => list.removeLast()).toThrow(NotFoundError);
     });
   });
@@ -59,6 +69,14 @@ describe('LinkedList', () => {
       const list = createList([6, 3, 2]);
       list.clear();
       expect(Array.from(list)).toEqual([]);
+      expect(list.getSize()).toBe(0);
+    });
+
+    test('should handle clearing an empty list', () => {
+      const list = createList();
+      list.clear();
+      expect(Array.from(list)).toEqual([]);
+      expect(list.getSize()).toBe(0);
     });
   });
 
@@ -73,6 +91,11 @@ describe('LinkedList', () => {
       list.add(3);
       list.removeFirst();
       expect(list.getSize()).toBe(2);
+    });
+
+    test('should return zero for empty list', () => {
+      const list = createList();
+      expect(list.getSize()).toBe(0);
     });
   });
 
@@ -89,6 +112,55 @@ describe('LinkedList', () => {
       expect(Array.from(list)).toEqual([3, 2, 1]);
       expect(Array.from(emptyList)).toEqual([]);
       expect(Array.from(singleList)).toEqual([10]);
+    });
+
+    test('should maintain size after reversal', () => {
+      const list = createList([1, 2, 3]);
+      const sizeBefore = list.getSize();
+      list.reverse();
+      expect(list.getSize()).toBe(sizeBefore);
+    });
+  });
+
+  describe('toArray', () => {
+    test('should convert list to array with correct order', () => {
+      const list = createList([1, 2, 3]);
+      expect(list.toArray()).toEqual([1, 2, 3]);
+    });
+
+    test('should return empty array for empty list', () => {
+      const list = createList();
+      expect(list.toArray()).toEqual([]);
+    });
+
+    test('should handle object values', () => {
+      const objects = [{ id: 1 }, { id: 2 }];
+      const list = createList(objects);
+      expect(list.toArray()).toEqual(objects);
+    });
+  });
+
+  describe('find', () => {
+    test('should find existing value', () => {
+      const list = createList([1, 2, 3, 2]);
+      expect(list.find(2)).toBe(2);
+      expect(list.find(3)).toBe(3);
+    });
+
+    test('should return undefined for non-existent value', () => {
+      const list = createList([1, 2, 3]);
+      expect(list.find(4)).toBeUndefined();
+    });
+
+    test('should return undefined for empty list', () => {
+      const list = createList();
+      expect(list.find(1)).toBeUndefined();
+    });
+
+    test('should find object by reference', () => {
+      const obj = { id: 1 };
+      const list = createList([obj, { id: 2 }]);
+      expect(list.find(obj)).toBe(obj);
     });
   });
 });
