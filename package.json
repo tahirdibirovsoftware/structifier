@@ -5,13 +5,13 @@
   "keywords": [
     "structs"
   ],
-  "homepage": "https://github.com/tahirdibirovsoftware/structs#readme",
+  "homepage": "https://github.com/tahirdibirovsoftware/structifier#readme",
   "bugs": {
-    "url": "https://github.com/tahirdibirovsoftware/structs/issues"
+    "url": "https://github.com/tahirdibirovsoftware/structifier/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tahirdibirovsoftware/structs.git"
+    "url": "git+https://github.com/tahirdibirovsoftware/structifier.git"
   },
   "license": "MIT",
   "author": "Tahir Dibirov II",
