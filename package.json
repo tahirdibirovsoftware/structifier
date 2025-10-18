@@ -19,7 +19,6 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "publishConfig": {
-    "access": "public",
     "provenance": true,
     "registry": "https://registry.npmjs.org/",
     "tag": "latest"
