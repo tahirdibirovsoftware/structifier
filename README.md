@@ -7,7 +7,7 @@ A TypeScript library providing robust and efficient data structure implementatio
 Install Structifier via npm:
 
 ```bash
-npm install @tahirdibirovsoftware/structifier
+npm install structifier
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ npm install @tahirdibirovsoftware/structifier
 Structifier is designed to be used with ES Modules. Here's a basic example using the `LinkedList` implementation:
 
 ```typescript
-import { LinkedList } from '@tahirdibirovsoftware/structifier';
+import { LinkedList } from 'structifier';
 
 // Create a new linked list
 const list = new LinkedList<number>();
@@ -113,11 +113,3 @@ Contributions are welcome! Please open an issue or submit a pull request. Follow
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Roadmap
-
-- Add `Graph` implementation
-- Add `Stack` implementation
-- Add `Queue` implementation
-
-### Enhance existing structures with additional utilities
