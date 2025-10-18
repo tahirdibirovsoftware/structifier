@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/tahirdibirovsoftware/structs/compare/v1.2.0...v1.3.0) (2025-10-18)
+
+
+### Features
+
+* add toArray and find methods to LinkedList implementation ([963d117](https://github.com/tahirdibirovsoftware/structs/commit/963d1178f2bdf9554d3880ee2ac7144c89a5eb4f))
+
 # [1.2.0](https://github.com/tahirdibirovsoftware/structs/compare/v1.1.0...v1.2.0) (2025-10-18)
 
 
