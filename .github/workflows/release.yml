@@ -9,6 +9,7 @@ permissions:
   contents: write        # needed to push changelog and tags
   issues: write          # needed for GitHub releases
   pull-requests: write   # needed for GitHub release notes
+  id-token: write
 
 jobs:
   release:
