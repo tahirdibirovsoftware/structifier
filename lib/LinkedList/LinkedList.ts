@@ -4,6 +4,7 @@ class Node<T> {
   public data: T;
   public next: Node<T> | null;
   public prev: Node<T> | null;
+
   constructor(data: T) {
     this.data = data;
     this.next = null;
@@ -11,14 +12,27 @@ class Node<T> {
   }
 }
 
+/**
+ * A doubly-linked list implementation supporting generic types, with methods for
+ * adding, removing, reversing, and iterating over elements. This data structure
+ * is useful for scenarios requiring efficient insertions/deletions at both ends
+ * or bidirectional traversal.
+ */
 export class LinkedList<T> {
   private header: Node<T> | null;
   private tail: Node<T> | null;
   private size: number;
+
   constructor() {
     this.header = this.tail = null;
     this.size = 0;
   }
+
+  /**
+   * Adds a new node with the given data to the end of the list.
+   * @param data The data to add to the list.
+   * @throws {NotFoundError} If the operation fails due to an internal state issue.
+   */
   public add(data: T): void {
     this.size++;
     const node = new Node(data);
@@ -30,100 +44,111 @@ export class LinkedList<T> {
       return;
     }
 
-    // Case 2: List is not empty (2 or more elements, or the single-element case)
-    // The old tail's 'next' must point to the new node.
+    // Case 2: List is not empty
     if (this.tail !== null) {
       this.tail.next = node;
-      node.prev = this.tail; // New node's 'prev' points back to the old tail.
+      node.prev = this.tail;
     }
-    this.tail = node; // Update the list's tail to the new node.
+    this.tail = node;
   }
+
+  /**
+   * Removes and returns the first element from the list.
+   * @returns The data of the removed node.
+   * @throws {NotFoundError} If the list is empty.
+   */
   public removeFirst(): T {
-    if (this.header !== null) {
-      const removed = this.header;
-      this.header = this.header.next;
-
-      if (this.header !== null) {
-        this.header.prev = null;
-      } else {
-        // CRITICAL: If header is null, the list is now empty, so tail must be null too.
-        this.tail = null;
-      }
-
-      this.size--;
-      return removed.data;
-    } else {
+    if (this.header === null) {
       throw new NotFoundError('Cannot remove an empty list');
     }
+    const removed = this.header;
+    this.header = this.header.next;
+
+    if (this.header !== null) {
+      this.header.prev = null;
+    } else {
+      this.tail = null; // List is now empty
+    }
+
+    this.size--;
+    return removed.data;
   }
+
+  /**
+   * Removes and returns the last element from the list.
+   * @returns The data of the removed node.
+   * @throws {NotFoundError} If the list is empty.
+   */
   public removeLast(): T {
-    // 1. Handle an empty list
     if (this.header === null) {
       throw new NotFoundError('Cannot remove an empty list');
     }
 
-    // Since 'this.header' is not null, 'this.tail' must also not be null
-    // in a correctly maintained list. We use a local variable for clarity.
     const removedNode = this.tail as Node<T>;
     const removedData = removedNode.data;
     this.size--;
 
-    // 2. Handle a list with one element (header === tail)
     if (this.header === this.tail) {
       this.header = null;
       this.tail = null;
-      return removedData;
+    } else {
+      const newTail = removedNode.prev;
+      if (newTail !== null) {
+        newTail.next = null;
+      }
+      this.tail = newTail;
     }
-
-    // 3. Handle a list with two or more elements
-    // The previous node is stored in the current tail's 'prev' pointer
-    // We already checked that removedNode is not null.
-    const newTail = removedNode.prev;
-
-    // CRITICAL: Update the new tail's pointers
-    if (newTail !== null) {
-      // Break the link from the new tail to the old (removed) tail.
-      newTail.next = null;
-    }
-
-    // Update the list's tail reference
-    this.tail = newTail;
 
     return removedData;
   }
+
+  /**
+   * Returns the current number of elements in the list.
+   * @returns The size of the list.
+   */
   public getSize(): number {
     return this.size;
   }
+
+  /**
+   * Clears all elements from the list, resetting it to an empty state.
+   */
   public clear(): void {
     let current: Node<T> | null = this.header;
-    let nextNode: Node<T> | null;
-
     while (current !== null) {
-      nextNode = current.next;
-      current.next = null;
+      const nextNode = current.next;
+      current.next = null; // Help garbage collection
       current = nextNode;
     }
-
     this.header = null;
+    this.tail = null;
     this.size = 0;
   }
+
+  /**
+   * Reverses the order of elements in the list in-place.
+   */
   public reverse(): void {
     let current = this.header;
-    let temp: Node<T> | null = null; // Used to swap prev and next
+    let temp: Node<T> | null = null;
 
-    // 1. Swap prev and next pointers for every node
     while (current !== null) {
-      temp = current.prev; // Store current prev
-      current.prev = current.next; // Flip prev to next
-      current.next = temp; // Flip next to old prev
-      current = current.prev; // Move to the next node (which is now in current.prev)
+      temp = current.prev; // Store previous
+      current.prev = current.next; // Swap prev and next
+      current.next = temp; // Complete the swap
+      current = current.prev; // Move to next node
     }
 
-    // 2. Swap header and tail references
+    // Swap header and tail
     temp = this.header;
     this.header = this.tail;
     this.tail = temp;
   }
+
+  /**
+   * Generator function to iterate over the list's elements.
+   * @returns An iterator yielding each element's data.
+   */
   public *listGenerator(): IterableIterator<T> {
     let current = this.header;
     while (current !== null) {
@@ -131,11 +156,44 @@ export class LinkedList<T> {
       current = current.next;
     }
   }
+
+  /**
+   * Implements the iterable protocol for the list.
+   * @returns An iterator yielding each element's data.
+   */
   *[Symbol.iterator](): IterableIterator<T> {
     let current = this.header;
     while (current !== null) {
       yield current.data;
       current = current.next;
     }
+  }
+
+  /**
+   * Converts the linked list to an array of its elements.
+   * @returns An array containing all elements in order.
+   */
+  public toArray(): T[] {
+    const result: T[] = [];
+    for (const item of this.listGenerator()) {
+      result.push(item);
+    }
+    return result;
+  }
+
+  /**
+   * Finds the first node with data matching the provided value using strict equality.
+   * @param value The value to search for.
+   * @returns The data of the found node, or undefined if not found.
+   */
+  public find(value: T): T | undefined {
+    let current = this.header;
+    while (current !== null) {
+      if (current.data === value) {
+        return current.data;
+      }
+      current = current.next;
+    }
+    return undefined;
   }
 }
