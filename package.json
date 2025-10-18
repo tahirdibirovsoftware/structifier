@@ -1,6 +1,6 @@
 {
   "name": "structs",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Basic data structures for working in the JS environment",
   "keywords": [
     "structs"
