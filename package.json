@@ -1,6 +1,6 @@
 {
-  "name": "structs",
-  "version": "1.0.2",
+  "name": "@tahirdibirovsoftware/structs",
+  "version": "0.0.0",
   "description": "Basic data structures for working in the JS environment",
   "keywords": [
     "structs"
@@ -23,6 +23,7 @@
     "registry": "https://registry.npmjs.org/",
     "tag": "latest"
   },
+  
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
