@@ -2,7 +2,7 @@ name: Release
 on:
   push:
     branches:
-      - main # or main
+      - main
 
 permissions:
   contents: read # for checkout
@@ -27,6 +27,8 @@ jobs:
           node-version: "lts/*"
       - name: Install dependencies
         run: npm clean-install
+      - name: Build package
+        run: npm run build
       - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
         run: npm audit signatures
       - name: Release
