@@ -1,21 +1,39 @@
 name: Release
+
 on:
   push:
     branches:
       - main
 
+permissions:
+  contents: write        # needed to push changelog and tags
+  issues: write          # needed for GitHub releases
+  pull-requests: write   # needed for GitHub release notes
+
 jobs:
   release:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # required for semantic-release to analyze full history
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: 'https://registry.npmjs.org/'
-      - run: npm ci
-      - run: npm run build
-      - run: npx semantic-release
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build package
+        run: npm run build
+
+      - name: Release with semantic-release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # built-in, now has write perms
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}        # from npm automation token
+        run: npx semantic-release
