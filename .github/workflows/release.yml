@@ -1,47 +1,36 @@
 name: Release
-
 on:
   push:
     branches:
-      - main
+      - main # or main
 
 permissions:
-  contents: write        # needed to push changelog and tags
-  issues: write          # needed for GitHub releases
-  pull-requests: write   # needed for GitHub release notes
-  id-token: write
+  contents: read # for checkout
 
 jobs:
   release:
+    name: Release
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # required for semantic-release to analyze full history
-
+          fetch-depth: 0
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          registry-url: 'https://registry.npmjs.org/'
-
+          node-version: "lts/*"
       - name: Install dependencies
-        run: npm ci
-
-      - name: Build package
-        run: npm run build
-
-      - name: Debug NPM_TOKEN
-        run: echo "NPM_TOKEN is set to [${NPM_TOKEN}]"
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        # Note: The actual token value will be masked for security
-
-      - name: Release with semantic-release
+        run: npm clean-install
+      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+        run: npm audit signatures
+      - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          SEMANTIC_RELEASE_LOG_LEVEL: debug  # Enable debug logging
         run: npx semantic-release

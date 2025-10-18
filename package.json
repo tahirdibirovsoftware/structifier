@@ -19,8 +19,11 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "publishConfig": {
-    "provenance": true
+    "provenance": true,
+    "registry": "https://registry.npmjs.org/",
+    "tag": "latest"
   },
+  
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
