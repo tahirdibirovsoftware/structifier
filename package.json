@@ -1,6 +1,6 @@
 {
   "name": "structifier",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Basic data structures for working in the JS environment",
   "keywords": [
     "structs"
